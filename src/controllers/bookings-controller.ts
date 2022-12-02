@@ -45,7 +45,6 @@ export async function createBooking(req: AuthenticatedRequest, res: Response) {
     if (error.statusText === "Forbidden") {
       return res.sendStatus(httpStatus.FORBIDDEN);
     }
-    return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -69,7 +68,5 @@ export async function updateBooking(req: AuthenticatedRequest, res: Response) {
     if (error.statusText === "Forbidden") {
       return res.sendStatus(httpStatus.FORBIDDEN);
     }
-
-    return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
   }
 }
