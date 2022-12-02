@@ -58,9 +58,38 @@ async function createBooking(userId: number, roomId: number) {
   return booking;
 }
 
+async function updateBooking(userId: number, roomId: number, bookingId: number) {
+  await checkTicketStatus(userId);
+
+  if (roomId < 1 || !Number(roomId) || bookingId < 1 || !Number(bookingId)) {
+    throw requestError(403, "Forbidden");
+  }
+
+  const room = await hotelRepository.findRoomWithBookings(roomId);
+
+  if (!room) {
+    throw notFoundError();
+  }
+
+  const userBooking = await bookingRepository.findBookingByUserId(userId);
+
+  if (!userBooking || userBooking.userId !== userId) {
+    throw requestError(403, "Forbidden");
+  }
+
+  if (room.capacity <= room.Booking.length) {
+    throw requestError(403, "Forbidden");
+  }
+
+  const booking = await bookingRepository.updateBooking(userId, room.id, bookingId);
+  
+  return booking;
+}
+
 const bookingService = {
   getBooking,
-  createBooking
+  createBooking,
+  updateBooking
 };
 
 export default bookingService;

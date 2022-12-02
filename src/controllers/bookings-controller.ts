@@ -48,3 +48,28 @@ export async function createBooking(req: AuthenticatedRequest, res: Response) {
     return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
   }
 }
+
+export async function updateBooking(req: AuthenticatedRequest, res: Response) {
+  const { userId } = req;
+  const { roomId } = req.body;
+  const bookingId = Number(req.params.bookingId);
+
+  try {
+    const data = await bookingService.updateBooking(userId, roomId, bookingId);
+
+    const booking = {
+      bookingId: data.id,
+    };
+
+    return res.status(httpStatus.OK).send(booking);
+  } catch (error) {
+    if (error.name === "NotFoundError") {
+      return res.sendStatus(httpStatus.NOT_FOUND);
+    }
+    if (error.statusText === "Forbidden") {
+      return res.sendStatus(httpStatus.FORBIDDEN);
+    }
+
+    return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+  }
+}

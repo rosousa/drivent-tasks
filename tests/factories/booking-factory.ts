@@ -18,6 +18,16 @@ export async function findBookings() {
 export async function createTwoBookings(roomId: number) {
   const user1 = await createUser();
   const user2 = await createUser();
-  await createBooking(user1.id, roomId);
-  await createBooking(user2.id, roomId);
+  const booking1 = await createBooking(user1.id, roomId);
+  const booking2 = await createBooking(user2.id, roomId);
+
+  return [booking1.id, booking2.id];
+}
+
+export async function findBookingByUserId(userId: number) {
+  return prisma.booking.findFirst({
+    where: {
+      userId
+    }
+  });
 }
