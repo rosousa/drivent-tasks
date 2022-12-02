@@ -22,7 +22,6 @@ export async function getBooking(req: AuthenticatedRequest, res: Response) {
     if (error.statusText === "Forbidden") {
       return res.sendStatus(httpStatus.FORBIDDEN);
     }
-    return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
   }
 }
 
